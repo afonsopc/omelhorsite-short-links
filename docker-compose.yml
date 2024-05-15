@@ -1,0 +1,25 @@
+services:
+  short-links-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3020:3020"
+    environment:
+      - ENDPOINT=0.0.0.0:3020
+    env_file:
+      - ./short-links/.env
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./database/:/database/:rw
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=database
+      - PGDATA=/database
+    ports:
+      - "3030:3000"
+    command: postgres -c log_statement=all -p 3000
